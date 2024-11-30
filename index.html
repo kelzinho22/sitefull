@@ -1,0 +1,807 @@
+
+
+<html><head><base href="/">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="https://i.postimg.cc/636Rm3Ry/gtcmodroxo.png" type="image/png">
+<title>GMod para Android</title>
+<style>
+:root {
+  --primary: #7B1FA2;
+  --secondary: #9C27B0;
+  --text: #212121;
+  --background: #f5f5f5;
+  --sidebar-width: 250px;
+}
+
+body {
+  font-family: 'Google Sans', Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background: var(--background);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background: var(--primary);
+  padding: 20px 0;
+  color: white;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+  transform: translateX(-100%);
+  z-index: 1000;
+}
+
+.sidebar.active {
+  transform: translateX(0); 
+}
+
+.sidebar-link {
+  display: block;
+  padding: 15px 25px;
+  color: white;
+  text-decoration: none;
+  transition: background 0.3s;
+  opacity: 1;
+  visibility: visible;
+}
+
+.sidebar-link:hover {
+  background: var(--secondary);
+}
+
+.version-text {
+  margin-top: auto;
+  text-align: center;
+  padding: 20px 10px;
+  font-size: 12px;
+  color: rgba(255,255,255,0.7);
+}
+
+
+.checkmark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
+}
+
+.checkmark svg {
+  width: 16px;
+  height: 16px;
+}
+
+.discord-name {
+  display: none;
+  align-items: center;
+  color: var(--primary);
+  font-weight: 500;
+  margin-top: 5px;
+}
+
+.content {
+  margin-left: 0;
+  transition: margin-left 0.3s ease;
+  padding: 15px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.logo {
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+}
+
+h1, h2 {
+  color: var(--primary);
+  margin: 20px 0;
+  text-align: center;
+}
+
+.version-badge {
+  background: var(--secondary);
+  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  display: inline-block;
+  margin: 10px 0;
+}
+
+.features {
+  background: white;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  border-left: 4px solid #9e9e9e;
+}
+
+.features h3 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: var(--primary); 
+}
+
+.warning {
+  background: #ffebee; 
+  border-left: 4px solid #f44336;
+  padding: 15px;
+  margin: 20px auto;
+  text-align: center;
+  max-width: 600px;
+}
+
+.warning h3 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #f44336;
+}
+
+.warning p {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.warning-yellow {
+  background: #fff3e0; 
+  border-left: 4px solid #ffa000; 
+  padding: 15px;
+  margin: 20px auto;
+  text-align: center;
+  max-width: 600px;
+}
+
+.warning-yellow h3 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #ffa000; 
+}
+
+.warning-yellow p {
+  text-align: center;
+  margin: 10px 0;
+}
+
+.download-section {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px; 
+  justify-content: center;
+  padding: 10px; 
+}
+
+.download-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.download-btn {
+  padding: 12px 25px;
+  border-radius: 25px;
+  text-decoration: none;
+  color: white;
+  transition: transform 0.2s;
+  margin-top: 20px;
+}
+
+.download-btn:hover {
+  transform: scale(1.05);
+}
+
+.btn-original { background: #2196F3; }
+.btn-dark { background: #263238; }
+.btn-purple { background: #9C27B0; }
+.btn-pink { background: #E91E63; }
+.btn-green { background: #4CAF50; }
+
+.section {
+  display: none;
+}
+
+.section.active {
+  display: block;
+}
+
+.feature-section {
+  margin-bottom: 30px;
+}
+
+.feature-section h3 {
+  color: var(--primary);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.feature-item {
+  padding: 10px 0;
+  text-align: left;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+.screenshots {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 15px; 
+  max-width: 100%;
+}
+
+.screenshots img {
+  width: 100%;
+  height: 180px; 
+  border-radius: 8px;
+  transition: transform 0.3s;
+  object-fit: cover; 
+}
+
+.screenshots h2,
+.screenshots .download-btn {
+  grid-column: 1 / -1;
+  text-align: center;
+  margin: 10px 0;
+}
+
+.popup-overlay {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.9);
+  z-index: 1000;
+  justify-content: center;
+  align-items: center;
+}
+
+.popup-content {
+  position: relative;
+  max-width: 90%;
+  max-height: 90%;
+}
+
+.popup-content img {
+  max-width: 100%;
+  max-height: 90vh;
+  border-radius: 8px;
+}
+
+.close-popup {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  color: white;
+  font-size: 30px;
+  cursor: pointer;
+  background: none;
+  border: none;
+  padding: 10px;
+}
+
+.color-select-btn {
+  padding: 12px 25px;
+  border-radius: 25px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.color-select-btn:hover {
+  transform: scale(1.05);
+}
+
+.screenshots h2 {
+  grid-column: 1 / -1;
+}
+
+.discord-section {
+  flex: 0 0 auto;
+}
+
+.download-counter {
+  flex: 0 0 auto;
+  text-align: right;
+}
+
+.download-counter-label {
+  display: block;
+  color: var(--primary);
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+
+.stats-section {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 0;
+  border-top: 1px solid #e0e0e0;
+  margin-top: 20px;
+}
+
+
+.menu-toggle {
+  display: block;
+  position: fixed;
+  top: 10px;
+  left: 10px;
+  z-index: 1001;
+  background: var(--primary);
+  border: none;
+  border-radius: 5px;
+  padding: 8px;
+  cursor: pointer;
+  color: white;
+}
+
+
+.sidebar.active + .content {
+  margin-left: var(--sidebar-width);
+}
+
+
+@media (max-width: 768px) {
+  .content {
+    margin-left: 0; 
+  }
+}
+
+
+@media (min-width: 769px) {
+  .content {
+    margin-left: 0; 
+  }
+}
+</style>
+</head>
+<body>
+<button class="menu-toggle" id="menuToggle">
+  <svg viewBox="0 0 24 24" width="24" height="24">
+    <path fill="currentColor" d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/>
+  </svg>
+</button>
+
+<nav class="sidebar">
+  <div style="text-align: center; padding: 20px;">
+    <svg class="logo" viewBox="0 0 100 100" style="width: 60px; height: 60px;">
+      <circle cx="50" cy="50" r="45" fill="white"/>
+      <text x="50" y="65" text-anchor="middle" fill="var(--primary)" style="font-size: 40px">GM</text>
+    </svg>
+  </div>
+  <a href="?home" class="sidebar-link">Página Inicial</a>
+  <a href="?recursos" class="sidebar-link">Recursos do Mod</a>
+  <a href="?baixar" class="sidebar-link">Baixar o Mod</a>
+  <a href="?changelog" class="sidebar-link">Changelog</a>
+  <a href="?faqs" class="sidebar-link">FAQs e Avisos</a>
+  <a href="https://gtclite.vercel.app/" class="sidebar-link">G Lite</a>
+  <div class="version-text">Versão do Site: 1.1</div>
+</nav>
+
+<div class="content">
+  <div id="home" class="section active">
+    <div class="header">
+      <h1>GMod para Android</h1>
+      <div class="version-badge">Versão 8.7</div>
+    </div>
+    
+    <div class="container">
+      <div class="features">
+        <p>Bem-vindo ao GMod, uma versão aprimorada do G para Android que oferece recursos exclusivos para melhorar sua experiência de jogo. Com nossa modificação, você terá acesso a recursos extras como novas cores para desenhar, possibilidade de entrar em qualquer sala, estatísticas detalhadas e muito mais!</p>
+        
+        <p>O GMod foi desenvolvido pensando nos jogadores que desejam mais liberdade e opções durante suas partidas. Nossa comunidade está sempre crescendo e trabalhamos constantemente para trazer atualizações e melhorias.</p>
+      </div>
+
+      <div class="stats-section">
+        <div class="discord-section">
+          <button id="discordBtn" class="discord-btn">
+            <svg class="discord-icon" viewBox="0 0 24 24" width="24" height="24">
+              <path fill="currentColor" d="M19.27 5.33C17.94 4.71 16.5 4.26 15 4a.09.09 0 0 0-.07.03c-.18.33-.39.76-.53 1.09a16.09 16.09 0 0 0-4.8 0c-.14-.34-.35-.76-.54-1.09c-.01-.02-.04-.03-.07-.03c-1.5.26-2.93.71-4.27 1.33c-.01 0-.02.01-.03.02c-2.72 4.07-3.47 8.03-3.1 11.95c0 .02.01.04.03.05c1.8 1.32 3.53 2.12 5.24 2.65c.03.01.06 0 .07-.02c.4-.55.76-1.13 1.07-1.74c.02-.04 0-.08-.04-.09c-.57-.22-1.11-.48-1.64-.78c-.04-.02-.04-.08-.01-.11c.11-.08.22-.17.33-.25c.02-.02.05-.02.07-.01c3.44 1.57 7.15 1.57 10.55 0c.02-.01.05-.01.07.01c.11.09.22.17.33.26c.04.03.04.09-.01.11c-.52.31-1.07.56-1.64.78c-.04.01-.05.06-.04.09c.32.61.68 1.19 1.07 1.74c.03.01.06.02.09.01c1.72-.53 3.45-1.33 5.25-2.65c.02-.01.03-.03.03-.05c.44-4.53-.73-8.46-3.1-11.95c-.01-.01-.02-.02-.04-.02zM8.52 14.91c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12c0 1.17-.84 2.12-1.89 2.12zm6.97 0c-1.03 0-1.89-.95-1.89-2.12s.84-2.12 1.89-2.12c1.06 0 1.9.96 1.89 2.12c0 1.17-.83 2.12-1.89 2.12z"/>
+            </svg>
+            Discord
+          </button>
+          <div id="discordName" class="discord-name" style="display: none;">
+            <span class="checkmark">
+              <svg viewBox="0 0 24 24" width="16" height="16">
+                <circle cx="12" cy="12" r="10" fill="#4CAF50"/>
+                <path d="M9 12l2 2l4-4" stroke="white" stroke-width="2" fill="none"/>
+              </svg>
+            </span>
+            intocado
+          </div>
+        </div>
+        
+        <div class="download-counter">
+          <span class="download-counter-label">Contador de downloads</span>
+          <img src="https://img.shields.io/github/downloads/kepplinho/gtcm/total.svg" alt="Download Counter">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="features" class="section">
+    <h2>Recursos do Mod</h2>
+    <div class="features">
+      <div id="featureList"></div>
+    </div>
+    <div class="features">
+      <p style="text-align: center;">
+        Compatível para Android 6 a Android 12 totalmente. De Android 13 a 15 pode ter bug de notificações devido ao desenvolvimento até Android 11.
+      </p>
+    </div>
+    <div class="features">
+      <p style="text-align: center;">
+        Não se esqueça de desativar o Play Protect da Play Store para instalá-lo.
+      </p>
+      <p style="text-align: center;">
+        No config info do app, marque para abrir com... marcando todos os links do G.
+      </p>
+    </div>
+  </div>
+
+  <div id="download" class="section">
+    <h2>Download GMod</h2>
+    <h3 style="text-align: center; color: var(--primary); margin-bottom: 15px;">Escolha a cor</h3>
+    <div class="download-options">
+      <button onclick="showScreenshots('blue')" class="color-select-btn btn-original">Versão Azul Original</button>
+      <button onclick="showScreenshots('black')" class="color-select-btn btn-dark">Versão Escura</button>
+      <button onclick="showScreenshots('purple')" class="color-select-btn btn-purple">Versão Roxa</button>
+      <button onclick="showScreenshots('pink')" class="color-select-btn btn-pink">Versão Rosa</button>
+      <button onclick="showScreenshots('green')" class="color-select-btn btn-green">Versão Verde</button>
+    </div>
+    
+    <div class="download-section">
+      <div class="screenshots" id="blue-screenshots" style="display:none;">
+        <h2>Mod Azul Original</h2>
+        <img src="https://i.postimg.cc/qqtvFR36/Screenshot-20240815-191409-G.jpg" alt="Azul 1" onclick="showPopup(this.src)">
+        <img src="https://i.postimg.cc/NFWjvc6J/Screenshot-20240815-191415-G.jpg" alt="Azul 2" onclick="showPopup(this.src)">
+        <img src="https://i.postimg.cc/RC8FHck7/Screenshot-20240815-191423-G.jpg" alt="Azul 3" onclick="showPopup(this.src)">
+        <img src="https://i.postimg.cc/VLCNBJw3/Screenshot-20240815-191443-G.jpg" alt="Azul 4" onclick="showPopup(this.src)">
+        <a href="https://github.com/kepplinho/gtcm/releases/download/etual6/G8.7.apk" class="download-btn btn-original">Baixar</a>
+      </div>
+
+      <div class="screenshots" id="purple-screenshots" style="display:none;">
+        <h2>Mod Roxo</h2>
+        <img src="https://i.postimg.cc/JhmthM9S/Screenshot-20240815-191514-G.jpg" alt="Roxo 1" onclick="showPopup(this.src)">
+        <img src="https://i.postimg.cc/vBZBWX8z/Screenshot-20240815-191520-G.jpg" alt="Roxo 2" onclick="showPopup(this.src)">
+        <img src="https://i.postimg.cc/qRD7Qnzd/Screenshot-20240815-191528-G.jpg" alt="Roxo 3" onclick="showPopup(this.src)">
+        <img src="https://i.postimg.cc/TP91LBx1/Screenshot-20240815-191552-G.jpg" alt="Roxo 4" onclick="showPopup(this.src)">
+        <a href="https://github.com/kepplinho/gtcm/releases/download/etual6/GRoxo8.7.apk" class="download-btn btn-purple">Baixar</a>
+      </div>
+
+      <div class="screenshots" id="black-screenshots" style="display:none;">
+        <h2>Mod Escuro</h2>
+        <img src="https://i.postimg.cc/05H6CgwJ/Screenshot-20240815-191134-G.jpg" alt="Preto 1" onclick="showPopup(this.src)">
+        <img src="https://i.postimg.cc/02MzWtYX/Screenshot-20240815-191141-G.jpg" alt="Preto 2" onclick="showPopup(this.src)">
+        <img src="https://i.postimg.cc/3JsdPg98/Screenshot-20240815-191149-G.jpg" alt="Preto 3" onclick="showPopup(this.src)">
+        <img src="https://i.postimg.cc/wjD7H7bh/Screenshot-20240815-191308-G.jpg" alt="Preto 4" onclick="showPopup(this.src)">
+        <a href="https://github.com/kepplinho/gtcm/releases/download/etual6/GDark8.7.apk" class="download-btn btn-dark">Baixar</a>
+      </div>
+
+      <div class="screenshots" id="pink-screenshots" style="display:none;">
+        <h2>Mod Rosa</h2>
+        <img src="https://i.postimg.cc/PfLHJvXp/Screenshot-20241110-053218-G-Rosa.jpg" alt="Rosa 1" onclick="showPopup(this.src)">
+        <img src="https://i.postimg.cc/rz6QFP8J/Screenshot-20241110-053225-G-Rosa.jpg" alt="Rosa 2" onclick="showPopup(this.src)">
+        <img src="https://i.postimg.cc/G3ZCy3tM/Screenshot-20241110-053344-G-Rosa.jpg" alt="Rosa 3" onclick="showPopup(this.src)">
+        <img src="https://i.postimg.cc/MKV8bkjz/Screenshot-20241110-053300-G-Rosa.jpg" alt="Rosa 4" onclick="showPopup(this.src)">
+        <a href="https://github.com/kepplinho/gtcm/releases/download/etual6/GRosa8.7.apk" class="download-btn btn-pink">Baixar</a>  
+      </div>
+
+      <div class="screenshots" id="green-screenshots" style="display:none;">
+        <h2>Mod Verde</h2>
+        <img src="https://i.postimg.cc/9f18tbpm/Screenshot-20241110-053424-G-Verde.jpg" alt="Verde 1" onclick="showPopup(this.src)">
+        <img src="https://i.postimg.cc/wvvWWNfh/Screenshot-20241110-053431-G-Verde.jpg" alt="Verde 2" onclick="showPopup(this.src)">
+        <img src="https://i.postimg.cc/26K0g5Mg/Screenshot-20241110-053920-G-Verde.jpg" alt="Verde 3" onclick="showPopup(this.src)">
+        <img src="https://i.postimg.cc/pr5svHtr/Screenshot-20241110-053509-G-Verde.jpg" alt="Verde 4" onclick="showPopup(this.src)">
+        <a href="https://github.com/kepplinho/gtcm/releases/download/etual6/GVerde8.7.apk" class="download-btn btn-green">Baixar</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="popup-overlay" id="imagePopup" onclick="hidePopup()">
+    <div class="popup-content">
+      <button class="close-popup" onclick="hidePopup()">&times;</button>
+      <img id="popupImage" src="" alt="Screenshot em tamanho grande">
+    </div>
+  </div>
+
+  <div id="changelog" class="section">
+    <h2>Changelog</h2>
+    <div class="features">
+        <h3>O que mudou nessa versão 8.7+? Versão estável</h3>
+        <ul>
+            <li>Bug corrigido: Ao denunciar jogador na sala, o layout quebrava.</li>
+            <br>
+            <li>Melhorias de desempenho: reduzindo qualquer lag do app.</li>
+            <br>
+            <li>
+                Chat era com 1k de mensagens reduzido para 70 mensagens: para não ter um peso no app por causa de
+                acúmulo de mensagens.
+            </li>
+            <br>
+            <li>
+                Respostas eram com 500 mensagens reduzidas para 60 mensagens: com o mesmo motivo. (Padrão do jogo)
+            </li>
+            <br>
+            <li>Contador do chat ficou em 50+.</li>
+            <br>
+            <li>Melhorias nas listas de salas.</li>
+        </ul>
+    </div>
+    <div class="features">
+        <h3>O que mudou nessa versão 8.0+?</h3>
+        <ul>
+            <li>
+                Adicionado log do ban do site (onde mostra o tempo da liberação da conta): Indo em Opções>Site G,
+                esperando aplicar o modo site PC.
+            </li>
+            <br>
+            <li>
+                Você pode ver os perfis dos jogadores clicando no nome em JOGADORES: na tela de confirmação de sala.
+            </li>
+            <br>
+            <li>
+                Animações e transições mais rápidas: de 250ms para 180ms. Se caso tiver travado ou algo que atrapalhe,
+                mande msg no Discord user: Intocado.
+            </li>
+            <br>
+            <li>Agora tem em cores Rosa e Verde: veja em downloads.</li>
+        </ul>
+    </div>
+</div>
+
+ <div id="faqs" class="section">
+    <h2>FAQs e Avisos</h2>
+    
+    <div class="features">
+      <h3>FAQs</h3>
+      <div class="faq-item">
+        <h4>É seguro?</h4>
+      <p>Sim, pode instalar e jogar normalmente.</p>
+    </div>
+    <div class="faq-item">
+      <h4>Se usar leva ban?</h4>
+      <p>Não, os admin não têm rastreio ou método para saber se algo foi modificado.</p>
+    </div>
+    <div class="faq-item">
+      <h4>Por que meu celular diz que é um aplicativo malware, malicioso?</h4>
+      <p>Geralmente qualquer aplicativo baixado por fora da Play Store é acusado disso. Além disso, por usar uma chave genérica de assinatura do aplicativo, já que não possuo a original do G, qualquer lugar de segurança, seja Play Protect da Play Store ou algum serviço de segurança do dispositivo, irá acusar.</p>
+    </div>
+    <div class="faq-item">
+      <h4>Por que não consigo instalar?</h4>
+      <p>Provavelmente, o Play Protect está ativado. Você precisa desativá-lo. Para quem não sabe, isso é como "Fontes Desconhecidas", que tinha que ativar nos sistemas Android mais antigos.</p>
+    </div>
+    <div class="faq-item">
+      <h4>Recomendação:</h4>
+      <p>Para maior segurança, você pode <a href="https://www.virustotal.com" target="_blank">verificar os arquivos baixados no VirusTotal</a> antes de instalar. Daí você verá que só tem 3 por causa da assinatura (key) genérica.</p>
+      </div>
+    </div>
+
+    <div class="warning">
+      <h3>⚠️ ATENÇÃO REDOBRADA</h3>
+      <p>NÃO CLIQUE BASTANTE NO BOTÃO DE ENTRAR (0.5s a 3s), NUMA SALA CHEIA, VAI SER BLOQUEADO PELO IP, E FICARÁ EM LOOP INFINITO (CARREGAMENTO RODANDO SEM PARAR), ENTÃO CLIQUE A CADA 5seg OU ESPERE O CONTADOR DESCER PRA VAGA DISPONÍVEL.</p>
+      <br>
+      <p>NÃO POSTE PRINTS NO SITE G</p>
+      <br>
+      <p>NÃO MENCIONE O G MOD NO JOGO</p>
+      <br>
+    </div>
+      
+    <div class="warning-yellow">
+      <h3>⚠️ Isenção de Responsabilidade</h3>
+      <p>Não me responsabilizo por quaisquer danos, seja na sua conta do G, em caso de uso indevido. Use por sua conta e risco.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+const paramMap = {
+  'baixar': 'download',
+  'recursos': 'features', 
+  'changelog': 'changelog',
+  'faqs': 'faqs',
+  'home': 'home'
+};
+
+
+document.querySelectorAll('.sidebar-link').forEach(link => {
+  link.addEventListener('click', function(e) {
+
+    if (this.getAttribute('href').startsWith('#?')) {
+      e.preventDefault();
+      const param = this.getAttribute('href').substring(1);
+      const sectionId = paramMap[param];
+      if (sectionId) {
+        showSection(sectionId);
+
+        window.history.pushState({}, '', `#?${param}`);
+      }
+    }
+  });
+});
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  const urlParams = new URLSearchParams(window.location.search);
+  let sectionFound = false;
+
+
+  for (let [param, sectionId] of Object.entries(paramMap)) {
+    if (urlParams.has(param)) {
+      showSection(sectionId);
+      sectionFound = true;
+      break;
+    }
+  }
+
+
+  if (!sectionFound) {
+    showSection('home');
+  }
+
+  const menuToggle = document.getElementById('menuToggle');
+  const sidebar = document.querySelector('.sidebar');
+
+  menuToggle.addEventListener('click', (e) => {
+    e.stopPropagation();
+    sidebar.classList.toggle('active');
+  });
+
+
+  document.addEventListener('click', (e) => {
+    if (!sidebar.contains(e.target) && !menuToggle.contains(e.target)) {
+      sidebar.classList.remove('active');
+    }
+  });
+
+
+  document.querySelectorAll('.sidebar-link').forEach(link => {
+    link.addEventListener('click', () => {
+      sidebar.classList.remove('active');
+    });
+  });
+});
+
+
+function showSection(sectionId) {
+
+  document.querySelectorAll('.section').forEach(section => {
+    section.classList.remove('active');
+  });
+  
+
+  const targetSection = document.getElementById(sectionId);
+  if (targetSection) {
+    targetSection.classList.add('active');
+
+    targetSection.scrollIntoView({ behavior: 'smooth' });
+  }
+}
+
+const features = [
+  {
+    title: "Principais Mudanças:",
+    items: [
+      "Possibilidade de entrar em qualquer sala oficial: Escolha qualquer sala para jogar, também é possível entrar via link. Desbloqueado.",
+      "Novas cores para desenhar: Adicionados 20 novas cores. Sugestões? Me mande um oi no Discord: User: Intocado.",
+      "Botão de denúncia sempre ativado: Agora você pode denunciar na tela de vez de alguém.",
+      "Intervalos: Agora o intervalo conta com várias frases.",
+      "\"Obra de Arte\" e \"Cancelado\": Mais frases justas adicionadas.",
+      "Flood: Flood sem bloqueio após três envios.",
+      "Xingamentos: Permitido alguns xingamentos sem bloqueio.",
+      "Contador de mensagem do chat e o chat: Contador ajustado para 50+ e mensagens somem após 70 mensagens no chat.",
+      "Input do teclado sempre habilitado: Agora é possível digitar nos intervalos e após acertar o desenho.",
+      "Vitórias visíveis (novidade 11/06): Agora é possível ver as vitórias de alguém em cada sala.",
+      "Segundo plano volta a funcionar: Funcionando novamente o segundo plano, exibido na barra de notificações.",
+      "Próximos a desenhar visíveis (novidade 10/09): deu para colocar apenas na barra do tempo do desenho.",
+      "Nomes dos jogadores em cada sala: na tela de confirmação."
+    ]
+  },
+  {
+    title: "E Mais Algumas Coisas:",
+    items: [
+      "Diminuído os avatares e o balão de conversa do chat.",
+      "Diminuídos alguns delays, como tempo de resposta no envio e de lista de salas.",
+      "Removidos anúncios.",
+      "Fonte padrão é Google Sans em Bold.",
+      "Botão de link de sala no botão (i) nas salas.",
+      "Ignorar alguém por comando também ignora nas respostas.",
+      "Ícone de acerto para o próprio jogador adicionado.",
+      "Removidos bloatwares do próprio jogo, como botões de redes sociais do G.",
+      "Mais opções em salas criadas (sem spoilers).",
+      "\"Saiu do jogo\" trocado para \"Saiu da sala\".",
+      "Integração com o Site G em Opções esperando 5s, é possível ver rank de cada tema.",
+      "Mostra dificuldade no aviso de confirmação Facíl, Médio e Difícil.",
+      "Mostra criador da sala no aviso de confirmação",
+      "Removido Integração com Facebook (botão de logar com facebook).",
+      "Criar conta ficou mais prático.",
+      "Criar sala com todas as informações de uma vez."
+    ]
+  }
+];
+
+
+const featureList = document.getElementById('featureList');
+featureList.innerHTML = ''; 
+
+
+features.forEach(section => {
+  const sectionDiv = document.createElement('div');
+  sectionDiv.className = 'feature-section';
+  
+  const title = document.createElement('h3');
+  title.textContent = section.title;
+  sectionDiv.appendChild(title);
+
+  const list = document.createElement('div');
+  section.items.forEach((item, index) => {
+    const itemDiv = document.createElement('div');
+    itemDiv.className = 'feature-item';
+    itemDiv.innerHTML = `<span style="color: var(--primary)">${index + 1}.</span> ${item}`;
+    list.appendChild(itemDiv);
+  });
+  
+  sectionDiv.appendChild(list);
+  featureList.appendChild(sectionDiv);
+});
+
+
+const featuresParent = document.getElementById('features');
+
+
+function showScreenshots(color) {
+  const allScreenshots = document.querySelectorAll('.screenshots');
+  allScreenshots.forEach(screenshots => {
+    screenshots.style.display = 'none';
+  });
+  document.getElementById(`${color}-screenshots`).style.display = 'grid';
+}
+
+function showPopup(imageSrc) {
+  const popup = document.getElementById('imagePopup');
+  const popupImg = document.getElementById('popupImage');
+  popup.style.display = 'flex';
+  popupImg.src = imageSrc;
+}
+
+function hidePopup() {
+  document.getElementById('imagePopup').style.display = 'none';
+}
+
+
+document.getElementById('imagePopup').addEventListener('click', function(e) {
+  if (e.target === this) {
+    hidePopup();
+  }
+});
+
+document.getElementById('discordBtn').addEventListener('click', function() {
+  const discordName = document.getElementById('discordName');
+  discordName.style.display = 'flex';
+});
+</script>
+
+</body></html>
